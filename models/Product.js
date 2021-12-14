@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const { Schema } = mongoose.Schema;
+const { Schema } = mongoose;
 
 const ProductSchema = new Schema({
   id: { type: Number, required: true },
@@ -7,8 +7,24 @@ const ProductSchema = new Schema({
   images: [{ type: String }],
   materials: [
     {
-      materialId: { type: Schema.Types.ObjectId, ref: "Material" },
+      materialId: { type: mongoose.Schema.Types.ObjectId, ref: "Material" },
       amountNeeded: { type: Number, required: true },
+    },
+  ],
+  dataSheet: { type: String },
+  cost: { type: Number },
+  attributes: [{ type: String }],
+  published: { type: Boolean, required: true },
+  variants: [
+    {
+      id: { type: Number },
+      price: { type: String },
+      values: [
+        {
+          lang: { type: String },
+          value: { type: String },
+        },
+      ],
     },
   ],
 });
