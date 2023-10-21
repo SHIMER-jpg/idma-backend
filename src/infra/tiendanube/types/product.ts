@@ -1,3 +1,5 @@
+import { Image } from './common';
+
 export interface Product {
   id: number;
   name: Description;
@@ -34,16 +36,6 @@ export interface Category {
   seoTitle: Description;
   seoDescription: Description;
   googleShoppingCategory: string;
-  createdAt: string;
-  updatedAt: string;
-}
-
-export interface Image {
-  id: number;
-  productID: number;
-  src: string;
-  position: number;
-  alt: any[];
   createdAt: string;
   updatedAt: string;
 }

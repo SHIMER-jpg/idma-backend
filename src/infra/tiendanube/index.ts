@@ -1,3 +1,5 @@
+import { Product } from './types';
+
 const { TIENDANUBE_URL, TIENDANUBE_CLIENT, TIENDANUBE_KEY } = process.env;
 
 export class TiendaNubeClient {
@@ -34,7 +36,7 @@ export class TiendaNubeClient {
     return this._get('orders/' + id);
   }
 
-  getProduct(id: string) {
+  getProduct(id: string): Promise<Product> {
     return this._get('products/' + id);
   }
 }
