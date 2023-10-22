@@ -3,7 +3,7 @@
 // import { REQUEST } from '@nestjs/core';
 // import { ConfigService } from '@nestjs/config';
 
-import { createClient, SupabaseClient } from '@supabase/supabase-js';
+import { createClient } from '@supabase/supabase-js';
 
 // Create a single supabase client for interacting with your database
 export default createClient(process.env.SUPABASE_URL, process.env.SUPABASE_KEY);
