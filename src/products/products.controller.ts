@@ -13,7 +13,6 @@ export class ProductsController {
 
   @Post('')
   receiveEvent(@Body() body: TiendaNubeEventDto) {
-    console.log(body);
     if (['product/created', 'product/updated'].includes(body.event))
       return this.productsService.upsert(body);
     if (body.event === 'product/deleted')

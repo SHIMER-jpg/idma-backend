@@ -33,7 +33,7 @@ export class OrdersService {
           quantity,
           product_id,
         })),
-        { onConflict: 'quantity, variant_values' },
+        { onConflict: 'id' },
       );
 
     if (itemError) throw new Error(itemError.message);
