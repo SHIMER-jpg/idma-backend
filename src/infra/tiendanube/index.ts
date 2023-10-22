@@ -1,7 +1,5 @@
 import { Product } from './types';
 
-const { TIENDANUBE_URL, TIENDANUBE_CLIENT, TIENDANUBE_KEY } = process.env;
-
 export class TiendaNubeClient {
   private baseUrl;
   private client;
@@ -12,7 +10,6 @@ export class TiendaNubeClient {
     this.client = process.env.TIENDANUBE_CLIENT;
   }
   private _request(path: string, method: 'GET' | 'POST', body = null) {
-    console.log('REC PATH', this.baseUrl + this.client + '/' + path);
     return fetch(this.baseUrl + this.client + '/' + path, {
       body,
       headers: {
