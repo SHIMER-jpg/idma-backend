@@ -20,7 +20,7 @@ export class ProductsService {
         name: tnProd.name.es,
         price: tnProd.variants[0].price,
         published: tnProd.published,
-        img: tnProd.images[0].src,
+        img: tnProd.images.length > 0 ? tnProd.images[0].src : null,
       },
       { onConflict: 'name, price, published, img' },
     );
