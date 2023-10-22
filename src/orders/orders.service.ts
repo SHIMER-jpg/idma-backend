@@ -1,11 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { createClient } from '@supabase/supabase-js';
 import { TiendaNubeClient } from 'src/infra/tiendanube';
-import { TiendaNubeEvent } from 'src/infra/tiendanube/types/events';
+import { TiendaNubeEventDto } from 'src/infra/tiendanube/EventDto';
 
 @Injectable()
 export class OrdersService {
-  async upsert(body: TiendaNubeEvent) {
+  async upsert(body: TiendaNubeEventDto) {
     const tnCli = new TiendaNubeClient();
     const {
       products,
@@ -57,7 +57,7 @@ export class OrdersService {
     return { data, itemData };
   }
 
-  async delete(body: TiendaNubeEvent) {
+  async delete(body: TiendaNubeEventDto) {
     const supabaseClient = createClient(
       process.env.SUPABASE_URL,
       process.env.SUPABASE_KEY,

@@ -1,6 +1,6 @@
 import { Controller, Get, Post, Body } from '@nestjs/common';
 import { ProductsService } from './products.service';
-import { TiendaNubeEvent } from 'src/infra/tiendanube/types/events';
+import { TiendaNubeEventDto } from 'src/infra/tiendanube/EventDto';
 
 @Controller('products')
 export class ProductsController {
@@ -12,7 +12,8 @@ export class ProductsController {
   }
 
   @Post('')
-  receiveEvent(@Body() body: TiendaNubeEvent) {
+  receiveEvent(@Body() body: TiendaNubeEventDto) {
+    console.log(body);
     if (['product/created', 'product/updated'].includes(body.event))
       return this.productsService.upsert(body);
     if (body.event === 'product/deleted')
