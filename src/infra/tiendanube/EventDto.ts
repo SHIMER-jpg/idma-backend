@@ -1,7 +1,6 @@
 import { IsInt, IsNotEmpty, IsIn, IsString } from 'class-validator';
 
 export class TiendaNubeEventDto {
-  @IsString()
   @IsNotEmpty()
   id: number;
 
@@ -25,7 +24,6 @@ export class TiendaNubeEventDto {
   ])
   event: string;
 
-  @IsInt()
   @IsNotEmpty()
   store_id: number;
 }
