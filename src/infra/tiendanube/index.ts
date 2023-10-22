@@ -1,4 +1,4 @@
-import { Product } from './types';
+import { Order, Product } from './types';
 
 export class TiendaNubeClient {
   private baseUrl;
@@ -29,7 +29,7 @@ export class TiendaNubeClient {
     return this._request(path, 'POST', body);
   }
 
-  getOrder(id: string) {
+  getOrder(id: string): Promise<Order> {
     return this._get('orders/' + id);
   }
 

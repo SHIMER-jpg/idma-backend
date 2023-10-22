@@ -1,11 +1,11 @@
 import { Image } from './common';
 
-export interface Orders {
+export interface Order {
   id: number;
   token: string;
-  storeID: number;
+  store_id: number;
   contactEmail: string;
-  contactName: string;
+  contact_name: string;
   contactPhone: string;
   contactIdentification: string;
   shippingMinDays: number;
@@ -51,7 +51,7 @@ export interface Orders {
   extra: Extra;
   storefront: string;
   note: string;
-  createdAt: string;
+  created_at: string;
   updatedAt: string;
   completedAt: CompletedAt;
   nextAction: string;
@@ -62,12 +62,12 @@ export interface Orders {
   fulfillments: any[];
   number: number;
   cancelReason: null;
-  ownerNote: null;
-  cancelledAt: null;
+  owner_note: null;
+  cancelled_at: null;
   closedAt: null;
   readAt: null;
   status: string;
-  paymentStatus: string;
+  payment_status: string;
   gatewayLink: string;
   hasShippableProducts: boolean;
   shippingCarrierName: string;
@@ -106,7 +106,7 @@ export interface OrderProduct {
   name: string;
   price: string;
   compareAtPrice: string;
-  productID: number;
+  product_id: number;
   image: Image;
   quantity: number;
   freeShipping: boolean;
@@ -114,6 +114,7 @@ export interface OrderProduct {
   width: string;
   variantID: number;
   variantValues: string[];
+  variant_values: string[];
   properties: any[];
   sku: null;
   barcode: null;

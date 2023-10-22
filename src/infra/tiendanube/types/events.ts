@@ -9,6 +9,7 @@ export interface TiendaNubeEvent {
     | 'category/deleted'
     | 'order/created'
     | 'order/updated'
+    | 'order/packed'
     | 'order/paid'
     | 'order/fulfilled'
     | 'order/cancelled'

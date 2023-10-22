@@ -1,4 +1,4 @@
-import { Controller, Post, Get } from '@nestjs/common';
+import { Controller, Post, Get, Body } from '@nestjs/common';
 import { OrdersService } from './orders.service';
 import { TiendaNubeEvent } from 'src/infra/tiendanube/types/events';
 
@@ -12,6 +12,12 @@ export class OrdersController {
     return;
   }
 
-  @Post('/create')
-  createOrder(body: TiendaNubeEvent) {}
+  @Post('')
+  receiveEvent(@Body() body: TiendaNubeEvent) {
+    if (['product/created', 'product/updated'].includes(body.event))
+      return this.ordersService.upsert(body);
+    if (body.event === 'order/packed') return;
+    if (body.event === 'product/deleted')
+      return this.ordersService.delete(body);
+  }
 }
