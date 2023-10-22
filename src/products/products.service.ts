@@ -22,7 +22,7 @@ export class ProductsService {
         published: tnProd.published,
         img: tnProd.images.length > 0 ? tnProd.images[0].src : null,
       },
-      { onConflict: 'name, price, published, img' },
+      { onConflict: 'id' },
     );
 
     if (error) throw new Error(error.message);

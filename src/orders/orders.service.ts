@@ -49,7 +49,7 @@ export class OrdersService {
         contact_name,
         number,
       },
-      { onConflict: 'payment_status, status, cancelled_at' },
+      { onConflict: 'id' },
     );
 
     if (error) throw new Error(error.message);
