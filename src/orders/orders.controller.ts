@@ -15,10 +15,10 @@ export class OrdersController {
 
   @Post('')
   receiveEvent(@Body() body: TiendaNubeEventDto) {
-    if (['product/created', 'product/updated'].includes(body.event))
+    if (['order/created', 'order/updated'].includes(body.event))
       return this.ordersService.upsert(body);
     if (body.event === 'order/packed') return null;
-    if (body.event === 'product/deleted')
+    if (body.event === 'order/deleted')
       return this.ordersService.delete(body);
   }
 }
