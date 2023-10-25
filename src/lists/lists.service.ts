@@ -2,10 +2,6 @@ import { Injectable } from '@nestjs/common';
 import { Supabase } from 'src/infra/supabase';
 import { sortVariantValues } from 'src/utils';
 
-import puppeteer from 'puppeteer';
-import pdfkit from 'pdfkit';
-import fs from 'fs';
-
 @Injectable()
 export class ListsService {
   constructor(private readonly supabase: Supabase) {}
