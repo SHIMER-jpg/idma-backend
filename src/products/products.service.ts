@@ -2,9 +2,11 @@ import { Injectable } from '@nestjs/common';
 import { createClient } from '@supabase/supabase-js';
 import { TiendaNubeClient } from 'src/infra/tiendanube';
 import { TiendaNubeEventDto } from 'src/infra/tiendanube/EventDto';
-
+import { Supabase } from 'src/infra/supabase/supabase';
 @Injectable()
 export class ProductsService {
+  constructor(private readonly supabase: Supabase) {}
+
   async upsert(body: TiendaNubeEventDto) {
     const tnCli = new TiendaNubeClient();
     const tnProd = await tnCli.getProduct(body.id.toString());
@@ -12,8 +14,9 @@ export class ProductsService {
       process.env.SUPABASE_URL,
       process.env.SUPABASE_KEY,
     );
+    const supabase = this.supabase.getClient();
 
-    const { data, error } = await supabaseClient.from('products').upsert(
+    const { data, error } = await supabase.from('products').upsert(
       {
         id: tnProd.id,
         created_at: tnProd.createdAt,
@@ -31,12 +34,9 @@ export class ProductsService {
   }
 
   async delete(body: TiendaNubeEventDto) {
-    const supabaseClient = createClient(
-      process.env.SUPABASE_URL,
-      process.env.SUPABASE_KEY,
-    );
+    const supabase = this.supabase.getClient();
 
-    const { error } = await supabaseClient
+    const { error } = await supabase
       .from('products')
       .delete()
       .eq('id', body.id);

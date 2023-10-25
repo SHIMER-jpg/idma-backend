@@ -1,6 +1,5 @@
 import { Controller, Post, Get, Body } from '@nestjs/common';
 import { OrdersService } from './orders.service';
-import { TiendaNubeEvent } from 'src/infra/tiendanube/types/events';
 import { TiendaNubeEventDto } from 'src/infra/tiendanube/EventDto';
 
 @Controller('orders')
