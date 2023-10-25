@@ -1,4 +1,4 @@
-import { Controller, Get, Param, Res, Post} from '@nestjs/common';
+import { Controller, Get, Param, Res, Post, Body } from '@nestjs/common';
 import { ListsService } from './lists.service';
 
 @Controller('lists')
@@ -13,7 +13,8 @@ export class ListsController {
     return res;
   }
 
-
-  // @Post("")
-  // async 
+  @Post('')
+  async assignList(@Body() body: any) {
+    return this.listService.assignList(body.data)
+  }
 }
