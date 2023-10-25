@@ -67,9 +67,9 @@ export class ListsService {
                 <th>Nombre del Contacto</th>
                 <th>Nota del Propietario</th>
                 <th>Nombre del Producto</th>
-                <th>Nota</th>
                 <th>Talle</th>
                 <th>Color</th>
+                <th>Nota</th>
     
             </tr>
         </thead>
@@ -84,9 +84,9 @@ export class ListsService {
                   <td>${order.orders.contact_name}</td>
                   <td>${order.orders.owner_note || ''}</td>
                   <td>${order.products.name}</td>
-                  <td>${order.note || ''}</td>
                   <td>${sortedVariants[0]}</td> <!-- Size -->
                   <td>${sortedVariants[1]}</td> <!-- Color -->
+                  <td>${order.note || ''}</td>
               </tr>
           `;
           })
