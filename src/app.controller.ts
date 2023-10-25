@@ -7,6 +7,7 @@ export class AppController {
 
   @Get()
   getHello(): string {
-    return this.appService.getHello();
+    return `
+    <iframe src="https://shimertest.retool.com/apps/IDMA/Orders" width="100%" height="100%">`;
   }
 }
