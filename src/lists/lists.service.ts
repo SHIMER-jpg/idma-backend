@@ -99,62 +99,102 @@ export class ListsService {
   async assignList(orderItems: { id: number }[]) {
     //Get active lists
 
-    const { data: orderItemsDetail } = await this.supabase
-      .getClient()
-      .from('order_items')
-      .select('*, products(worker_id,workers(lists(*)))')
-      .eq('products.workers.lists.status', 'OPEN')
-      .in(
-        'id',
-        orderItems.map(({ id }) => id),
-      );
+    const supabase = this.supabase.getClient();
 
-    for (const orderItem of orderItemsDetail) {
-      const list_id =
-        orderItem?.products?.workers?.lists[0].id ??
-        (
-          await this.supabase
-            .getClient()
-            .from('lists')
-            .insert({
-              worker_id: orderItem.products.worker_id,
-              status: 'OPEN',
-            })
-            .select('id')
-        )?.data[0]?.id;
+    async function fetchOrderItemsDetail(orderItems) {
+      const { data, error } = await supabase
+        .from('order_items')
+        .select('*, products(worker_id,workers(lists(*)))')
+        .eq('products.workers.lists.status', 'OPEN')
+        .in(
+          'id',
+          orderItems.map(({ id }) => id),
+        );
 
-      await this.supabase
-        .getClient()
+      if (error) {
+        throw error.message;
+      }
+
+      return data;
+    }
+
+    async function insertList(worker_id) {
+      const { data, error } = await supabase
+        .from('lists')
+        .insert({
+          worker_id,
+          status: 'OPEN',
+        })
+        .select('id');
+
+      if (error) {
+        throw error.message;
+      }
+
+      return data[0]?.id;
+    }
+
+    async function updateOrderItem(orderItem, list_id) {
+      const { error } = await supabase
         .from('order_items')
         .update({ list_id })
         .eq('id', orderItem.id);
+
+      if (error) {
+        throw error.message;
+      }
     }
 
-    const { data: listsComputed } = await this.supabase
-      .getClient()
-      .from('lists_computed')
-      .select(`*`)
-      .in(
-        'id',
-        orderItemsDetail
-          .map((item) => item.products.workers.lists.map(({ id }) => id))
-          .flat(),
-      );
+    async function fetchListsComputed(orderItemsDetail) {
+      const { data, error } = await supabase
+        .from('lists_computed')
+        .select('*')
+        .in(
+          'id',
+          orderItemsDetail
+            .map((item) => item.products.workers.lists.map(({ id }) => id))
+            .flat(),
+        );
+
+      if (error) {
+        throw error.message;
+      }
+
+      return data;
+    }
+
+    async function updateListStatus(list) {
+      const { error } = await supabase
+        .from('lists')
+        .update({ status: 'FULL' })
+        .eq('id', list.id);
+
+      if (error) {
+        throw error.message;
+      }
+    }
+
+    const orderItemsDetail = await fetchOrderItemsDetail(orderItems);
+
+    for (const orderItem of orderItemsDetail) {
+      const list_id =
+        orderItem?.products?.workers?.lists[0]?.id ??
+        (await insertList(orderItem.products.worker_id));
+      await updateOrderItem(orderItem, list_id);
+    }
+
+    const listsComputed = await fetchListsComputed(orderItemsDetail);
 
     for (const list of listsComputed) {
-      if (list.items === 10)
-        await this.supabase
-          .getClient()
-          .from('lists')
-          .update({ status: 'FULL' })
-          .eq('id', list.id);
+      if (list.items > 10) {
+        await updateListStatus(list);
+      }
     }
 
     return {
       orderItemsDetail,
       listsComputed,
     };
-
     //  If no active list then create
     // Update lists and close
   }
