@@ -8,6 +8,7 @@ export class OrdersController {
 
   @Post('')
   receiveEvent(@Body() body: TiendaNubeEventDto) {
+    return true;
     if (['order/created', 'order/updated'].includes(body.event))
       return this.ordersService.upsert(body);
     if (body.event === 'order/packed') return null;
