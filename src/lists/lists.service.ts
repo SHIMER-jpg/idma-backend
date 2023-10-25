@@ -1,13 +1,16 @@
 import { Injectable } from '@nestjs/common';
-import puppeteer from 'puppeteer';
 import { Supabase } from 'src/infra/supabase';
 import { sortVariantValues } from 'src/utils';
+
+import puppeteer from 'puppeteer';
+import pdfkit from 'pdfkit';
+import fs from 'fs';
 
 @Injectable()
 export class ListsService {
   constructor(private readonly supabase: Supabase) {}
 
-  async getPdf(id: number) {
+  async getPrintable(id: number) {
     const { data: orders, error } = await this.supabase
       .getClient()
       .from('order_items')
@@ -16,13 +19,7 @@ export class ListsService {
 
     if (error) throw new Error(error.message);
 
-    const browser = await puppeteer.launch({ headless: 'new' });
-
-    // Create a new page
-    const page = await browser.newPage();
-
-    // Set the content of the page
-    await page.setContent(`
+    return `
     <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -100,22 +97,10 @@ export class ListsService {
           .join('')}
         </tbody>
     </table>
-</body>`);
-
-    // Render the page as a PDF
-    const pdf = await page.pdf({ format: 'a4', landscape: true });
-
-    // Close the browser
-    await browser.close();
-
-    return pdf;
+</body>`;
   }
 
   async assignList(orderItems: { id: number }[]) {
-    console.log(
-      '🚀 ~ file: list.service.ts:9 ~ ListService ~ assignList ~ orderItems:',
-      orderItems,
-    );
     //Get active lists
     const lists = await this.supabase
       .getClient()
